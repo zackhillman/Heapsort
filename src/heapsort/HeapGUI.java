@@ -11,7 +11,7 @@ public class HeapGUI extends GBFrame{
 	private JButton outputTree;//Heapifys the numbers using a tree
 	private JButton reset; //Resets the program
 	private JTextArea output; //Where the numbers are outputted
-	private HeapArray heap;
+	private HeapArray<Integer> heap;
 	
 	/**
 	 * This is the constructor method. The GUI objects are instantiated.
@@ -33,7 +33,13 @@ public class HeapGUI extends GBFrame{
 	 */
 	public void buttonClicked(JButton buttonObj){
 		if(buttonObj == outputArray){
-			heap = new HeapArray(inputF.getText().split(","));
+			
+			String[] sArray = inputF.getText().split(",");
+			Integer[] iArray = new Integer[sArray.length];
+			for(int i = 0; i< iArray.length;i++){
+				iArray[i] = Integer.parseInt(sArray[i]);
+			}
+			heap = new HeapArray<Integer>(iArray);
 			output.setText(heap.outputHeap());
 		}else if(buttonObj == outputTree){
 			
