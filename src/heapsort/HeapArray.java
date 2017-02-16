@@ -107,7 +107,7 @@ public class HeapArray <T extends Comparable<T>>{
 	 * This method prints out the different levels of the heap
 	 * @return- each Level on a new line and Ts accordingly
 	 */
-	public String printLevels(){
+	private String printLevels(){
 		String output = "";
 		int level = 0;
 		for(int i = 0;i<list.length;i++){
