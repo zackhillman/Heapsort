@@ -35,7 +35,7 @@ public class HeapArray <T extends Comparable<T>>{
 	 * the sorted Ts
 	 */
 	public String outputHeap(){
-		log += printLevels()+"\n\n----\n\n";
+		log += printLevels()+"\n\n----\n\n"; //Output as inputed
 		heapify();
 		log+= "Sorted: " + toString();
 		return log;
@@ -47,22 +47,23 @@ public class HeapArray <T extends Comparable<T>>{
 	 * @return- true if a swap was made
 	 * 			false- if no swap was made
 	 */
-	private boolean heapifySubTree(int index){
-		int odd = 2*index+1;
-		int even = 2*index+2;
+	private boolean siftUp(int index){
+		int parent = getParent(index);
+		int left = getLeft(parent);
+		int right = getRight(parent);
 		
-		int max = index;
+		int max = parent;
 		
-		 if (odd <= lastItem && list[odd].compareTo(list[index])>0){
-			 max = odd;
+		 if (left <= lastItem && list[left].compareTo(list[parent])>0){
+			 max = left;
 			 
 		 }
 		
-	     if (even <= lastItem && list[even].compareTo( list[max])>0)        
-	    	 max = even;
+	     if (right <= lastItem && list[right].compareTo( list[max])>0)        
+	    	 max = right;
 	 
-	     if(max!=index){
-	    	 swap(index,max);
+	     if(max!=parent){
+	    	 swap(parent,max);
 	    	 return true;
 	     }
 	     return false;
@@ -74,22 +75,66 @@ public class HeapArray <T extends Comparable<T>>{
 	 * This method turns the list into a heap.
 	 */
 	private void heapify(){
-		while(lastItem>=0){
+		
 			boolean repeat = true;
 			while(repeat){
 				repeat = false;
-				for(int i = 0;i<lastItem;i++){
-					 if(heapifySubTree(i)){
+				for(int i = lastItem ;i>=0;i-=2){
+					 if(siftUp(i)){
 						 repeat = true;
 					 }
 				}
 			}
-			log+=printLevels()+"\n\n";
+			log+=printLevels()+"\n\n----\n\n"; //Output as Heap
+			sortHeap();
+			
+	}
+	
+	private void sortHeap(){
+		
+		while(lastItem>=0){
 			swap(lastItem,0);
 			lastItem--;
 			log+=printLevels()+"\n\n----\n\n";
-			
+			for(int i = 0 ;i<lastItem;i++){
+				 siftDown(i);
+			}
+		//	log+=printLevels()+"\n\n----\n\n";
 		}
+	}
+	
+	/**
+	 * This method sifts the heap downwards 
+	 * @param index
+	 */
+	private void siftDown(int index){
+		int parent = index;
+		int left = getLeft(parent);
+		int right = getRight(parent);
+		
+		int max = parent;
+		
+		 if (left <= lastItem && list[left].compareTo(list[parent])>0){
+			 max = left;
+			 
+		 }
+		
+	     if (right <= lastItem && list[right].compareTo( list[max])>0)        
+	    	 max = right;
+	 
+	     if(max!=parent){
+	    	 swap(parent,max);
+	     }
+	}
+	
+	private int getParent(int child){
+		return (child-1)/2;
+	}
+	private int getLeft(int parent){
+		return parent*2+1;
+	}
+	private int getRight(int parent){
+		return parent*2+2;
 	}
 	
 	/**
